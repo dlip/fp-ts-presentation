@@ -1,0 +1,12 @@
+{
+  "name": "fp-ts-presentation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dlip/fp-ts-presentation",
+  "author": "Dane Lipscombe <dane.lipscombe@immutable.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fp-ts": "^2.10.4",
+    "io-ts": "^2.2.16"
+  }
+}
