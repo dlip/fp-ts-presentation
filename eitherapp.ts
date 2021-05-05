@@ -32,7 +32,7 @@ function logic(): E.Either<AppError, string> {
     );
 }
 
-function handleError(e: AppError): string {
+function showError(e: AppError): string {
     switch (e.type) {
         case "NetworkError":
             return `NetworkError ${e.code}`;
@@ -46,7 +46,14 @@ function handleError(e: AppError): string {
 pipe(
     logic(),
     E.fold(
-        (e) => pipe(handleError(e), console.error),
-        console.log
+        (e) => {
+            console.error(showError(e));
+            process.exit(1);
+        },
+        (result) => {
+            console.log(result);
+            process.exit(0);
+        }
+
     )
 )
