@@ -6,7 +6,7 @@
 - Resembles lambda calculus
 - Started with Lisp in the late 1950's
 ** Benefits
-- Stronger guarantees of program corectness
+- Stronger guarantees of program correctness
 - Reduces the chance of null values and exceptions
 - Fits nicely with React's functional reactive style
 - Multi-threaded programming is easier
