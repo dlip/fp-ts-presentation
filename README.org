@@ -23,6 +23,7 @@ Similar to unix pipes eg.
 ** [[file:eitherapp.ts][Either example with app]]
 [[https://fsharpforfunandprofit.com/posts/recipe-part2/][Railway oriented programming | F# for fun and profit]]
 [[file:images/railway.png]]
+** [[file:taskeitherapp.ts][TaskEither example with app]]
 * Links
 ** Tutorials
 - [[https://dev.to/ryanleecode/practical-guide-to-fp-ts-pipe-and-flow-4e9n][Practical Guide to Fp-ts P1: Pipe and Flow *** DEV Community]]
