@@ -63,7 +63,7 @@ function showError(e: AppError): string {
 
 const run = pipe(
   logic(),
-  // Fold "lowers" TaskEither into a 2 Tasks that will execute based on success/fail
+  // Fold "lowers" TaskEither into a Task that will execute based on success/fail
   TE.fold(
     // Using fromIO is good practice to show we are performing an unsafe action
     (e) => T.fromIO(() => {
