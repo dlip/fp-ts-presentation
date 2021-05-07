@@ -3,6 +3,11 @@ import * as E from "fp-ts/Either";
 import * as T from "fp-ts/Task";
 import * as TE from "fp-ts/TaskEither";
 
+const NETWORK_ERROR = false;
+const NETWORK_WAIT = 3000;
+const TRANSFER_AMOUNT = 50;
+const BALANCE = 50;
+
 type NetworkError = {
   type: "NetworkError";
   code: number;
@@ -23,25 +28,23 @@ const userErrorInsufficientFunds: UserError = {
 type AppError = NetworkError | UserError;
 
 function getBalance(): TE.TaskEither<AppError, number> {
-  const ok = false;
   return TE.tryCatch(
     () =>
       new Promise((resolve, reject) => {
-        !ok ? reject(networkError404) : setTimeout(() => resolve(50), 5000);
+        NETWORK_ERROR ? reject(networkError404) : setTimeout(() => resolve(BALANCE), NETWORK_WAIT);
       }),
     (e) => e as AppError
   );
 }
 
 function transfer(balance: number): E.Either<AppError, string> {
-  console.log("Transfer");
-  return balance > 30
-    ? E.right("transfer complete")
+  return balance >= TRANSFER_AMOUNT
+    ? E.right("Transfer complete")
     : E.left(userErrorInsufficientFunds);
 }
 
 function logic(): TE.TaskEither<AppError, string> {
-  //Need to "lift" Either to TaskEither
+  //Need to "lift" Either to TaskEither for it to work with a pipe containing TaskEither
   const transferTE = TE.fromEitherK(transfer);
 
   return pipe(getBalance(), TE.chain(transferTE));
@@ -62,21 +65,17 @@ const run = pipe(
   logic(),
   // Fold "lowers" TaskEither into a 2 Tasks that will execute based on success/fail
   TE.fold(
-    (e) =>
-      T.of(() => {
-        console.log("Error");
-        console.log(e);
-        console.error(showError(e));
-        process.exit(1);
-      }),
-    (result) =>
-      T.of(() => {
-        console.log("Success");
-        console.log(result);
-        process.exit(0);
-      })
+    // Using fromIO is good practice to show we are performing an unsafe action
+    (e) => T.fromIO(() => {
+      console.error(showError(e));
+      process.exit(1);
+    }),
+    (result) => T.fromIO(() => {
+      console.log(result);
+      process.exit(0);
+    }),
   )
 );
 
-console.log("Running app");
+console.log("Running App");
 run();
