@@ -13,6 +13,54 @@
 ** Downsides
 - Harder to onboard developers without FP experience
 - Extra work to handle all possible errors rather than using a global try/catch
+** What does it look like
+*** Pure functions
+A pure function is a function where the return value is only determined by its input values, without observable side effects.
+
+Pure:
+#+begin_src js
+const add = (x, y) => x + y;
+add(2, 4); // 6 every time
+#+end_src
+
+Impure:
+#+begin_src js
+let x = 2;
+const add = (y) => {
+  x += y;
+};
+add(4); // x === 6 (the first time)
+#+end_src
+*** Statments vs Procedures
+Statements return a value and a procedure can execute pretty much any command.
+
+Statement:
+#+begin_src js
+const isAdult = age > 18 ? true : false;
+#+end_src
+
+Procedure:
+#+begin_src js
+let isAdult = false;
+if (age > 18) {
+    isAdult = true;
+    deleteDatabase();
+}
+#+end_src
+
+*** No try-catch
+
+Try-catch is similar to a goto and is undpredictable.
+
+We can handle errors using a new type called Either:
+
+#+begin_src typescript
+type Either<E, T> = Left<E> | Right<T>;
+#+end_src
+
+Left is Error and Right is success
+
+
 * Examples
 ** Running
 =yarn ts-node <file>.ts=
